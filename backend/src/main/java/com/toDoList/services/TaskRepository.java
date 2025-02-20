@@ -1,5 +1,6 @@
 package com.toDoList.services;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,12 +9,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.time.Duration;
 
 import org.springframework.stereotype.Repository;
 
+import com.toDoList.TaskPriority;
 import com.toDoList.models.Tasks;
-import com.toDoList.*;
 
 import jakarta.annotation.PostConstruct;
 //using streams instead of loops = more efficient and concise, streams process collections
@@ -53,7 +53,7 @@ public class TaskRepository {
         if ("priority".equalsIgnoreCase(sortBy)) {
             taskStream = taskStream.sorted(Comparator.comparing(Tasks::getTaskPriority));
         } else if ("taskDueDate".equalsIgnoreCase(sortBy)) {
-            taskStream = taskStream.sorted(Comparator.comparing(Tasks::getTaskDueDate));
+            taskStream = taskStream.sorted(Comparator.comparing(Tasks::getTaskDueDate, Comparator.nullsLast(Comparator.naturalOrder())));
         }
 
         // Pagination

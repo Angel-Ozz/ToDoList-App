@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.toDoList.TaskPriority;
@@ -23,7 +24,11 @@ import com.toDoList.services.TaskRepository;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "*")
+/**
+ * REST Controller for Tasks management
+ */
+
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/todos")
 public class TaskController {
@@ -35,7 +40,7 @@ public class TaskController {
     }
 
     @GetMapping("")
-    List<Tasks> findAll(
+     public ResponseEntity<List<Tasks>> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String sortBy,
@@ -43,66 +48,78 @@ public class TaskController {
             @RequestParam(required = false) String priority,
             @RequestParam(required = false) Boolean completed,
             @RequestParam(required = false) String taskName) {
-        return taskRepository.findAll(page, size, sortBy, filterBy, priority, completed, taskName);
+        List<Tasks> tasks = taskRepository.findAll(page, size, sortBy, filterBy, priority, completed, taskName);
+        if (tasks.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    Tasks findById(@PathVariable Integer id) throws Exception {
-
+    public ResponseEntity<Tasks> findById(@PathVariable Integer id) {
         Optional<Tasks> task = taskRepository.findById(id);
         if (task.isEmpty()) {
-            throw new Exception();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return task.get();
+        return new ResponseEntity<>(task.get(), HttpStatus.OK);
     }
 
     // get4 time general
     @GetMapping("/avg-done-time")
-    public double getAverageCompletionTime() {
-        return taskRepository.getAverageCompletionTime();
+    public ResponseEntity<Double> getAverageCompletionTime() {
+        double avgTime = taskRepository.getAverageCompletionTime();
+        return new ResponseEntity<>(avgTime, HttpStatus.OK);
     }
 
     // get4 time per prior
     @GetMapping("/avg-done-time-priorities")
-    public Map<TaskPriority, Double> getAverageCompletionTimePerPriority() {
-        return taskRepository.getAverageCompletionTimePerPriority();
+    public ResponseEntity<Map<TaskPriority, Double>> getAverageCompletionTimePerPriority() {
+        Map<TaskPriority, Double> avgTimes = taskRepository.getAverageCompletionTimePerPriority();
+        return new ResponseEntity<>(avgTimes, HttpStatus.OK);
     }
 
     // post
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    void create(@Valid @RequestBody Tasks task) {
+    public ResponseEntity<Void> create(@Valid @RequestBody Tasks task) {
         taskRepository.create(task);
-    }
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+}
 
     // patch to updt completed
-    @ResponseStatus(HttpStatus.OK)
+    @Transactional //use for future db implementation
     @PatchMapping("/{id}/done")
-    void markTaskAsDone(@PathVariable Integer id) throws Exception {
-        taskRepository.markAsDone(id)
-                .orElseThrow(() -> new Exception("ToDo not found"));
+    public ResponseEntity<Void> markTaskAsDone(@PathVariable Integer id) {
+        boolean updated = taskRepository.markAsDone(id).isPresent();
+        if (!updated) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // pathc to updt uncompleted
-    @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @PatchMapping("/{id}/undone")
-    void markTaskAsUnDone(@PathVariable Integer id) throws Exception {
-        taskRepository.markAsUnDone(id)
-                .orElseThrow(() -> new Exception("ToDo not found"));
+    public ResponseEntity<Void> markTaskAsUnDone(@PathVariable Integer id) {
+        boolean updated = taskRepository.markAsUnDone(id).isPresent();
+        if (!updated) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // put
-    @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @PatchMapping("/{id}")
-    void update(@Valid @RequestBody Tasks task, @PathVariable Integer id) {
+    public ResponseEntity<Void> update(@Valid @RequestBody Tasks task, @PathVariable Integer id) {
         taskRepository.patchUpdate(id, task);
+        return ResponseEntity.ok().build();
     }
 
     // delete
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    void delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         taskRepository.delete(id);
-    }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
 }

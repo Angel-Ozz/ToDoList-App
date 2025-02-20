@@ -8,8 +8,10 @@ import org.springframework.data.annotation.Id;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.toDoList.TaskPriority;
 
-import jakarta.validation.constraints.Size; //javax dsnt work with spring
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotEmpty; //javax dsnt work with spring
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class Tasks {
     @Id
@@ -17,12 +19,16 @@ public class Tasks {
     @NotEmpty
     @Size(max = 120)
     private String taskName;
+    @NotNull
     private TaskPriority taskPriority;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY) // USed for deserialization protection, because it was always
                                                           // setting it to null
     private LocalDateTime creationDate = LocalDateTime.now();
+    @NotNull
     private Boolean completed;
+    @FutureOrPresent
     private LocalDate taskDueDate;
+    @FutureOrPresent
     private LocalDateTime doneDate;
 
     // this bcause json serialization and des
