@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,11 @@ import com.toDoList.services.TaskRepository;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "*")
+/**
+ * REST Controller for Tasks management
+ */
+
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/todos")
 public class TaskController {
@@ -77,10 +82,11 @@ public class TaskController {
     @PostMapping("")
     public ResponseEntity<Void> create(@Valid @RequestBody Tasks task) {
         taskRepository.create(task);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+}
 
     // patch to updt completed
+    @Transactional //use for future db implementation
     @PatchMapping("/{id}/done")
     public ResponseEntity<Void> markTaskAsDone(@PathVariable Integer id) {
         boolean updated = taskRepository.markAsDone(id).isPresent();
@@ -91,6 +97,7 @@ public class TaskController {
     }
 
     // pathc to updt uncompleted
+    @Transactional
     @PatchMapping("/{id}/undone")
     public ResponseEntity<Void> markTaskAsUnDone(@PathVariable Integer id) {
         boolean updated = taskRepository.markAsUnDone(id).isPresent();
@@ -101,17 +108,18 @@ public class TaskController {
     }
 
     // put
+    @Transactional
     @PatchMapping("/{id}")
     public ResponseEntity<Void> update(@Valid @RequestBody Tasks task, @PathVariable Integer id) {
         taskRepository.patchUpdate(id, task);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     // delete
     @DeleteMapping("/{id}")
-public ResponseEntity<Void> delete(@PathVariable Integer id) {
-    taskRepository.delete(id);
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        taskRepository.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
 }
