@@ -81,7 +81,7 @@ const TaskListPage: React.FC = () => {
       };
 
       loadAverageTime();
-    }, [averageTime, tasks]);
+    }, [tasks]);
 
     if (error) {
       return <p>{error}</p>;
@@ -91,34 +91,31 @@ const TaskListPage: React.FC = () => {
   };
 
   const AverageCompletionTimePerPriority = () => {
-    const [averageTimes, setAverageTimes] = useState<
-      | {
-          HIGH: number;
-          MEDIUM: number;
-          LOW: number;
-        }
-      | {}
-    >({});
+    const [averageTimes, setAverageTimes] = useState<{
+      HIGH?: number;
+      MEDIUM?: number;
+      LOW?: number;
+    }>({});
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
       const loadAverageTimes = async () => {
         try {
           const data = await fetchAverageCompletionTimePriority();
-          setAverageTimes(data);
+          setAverageTimes(data || {});
         } catch (err) {
           setError("Error fetching average completion times by priority");
         }
       };
 
       loadAverageTimes();
-    }, [averageTimes, tasks]);
+    }, [tasks]);
 
     if (error) {
       return <p>{error}</p>;
     }
 
-    if (Object.keys(averageTimes).length === 0) {
+    if (!averageTimes || Object.keys(averageTimes).length === 0) {
       return <p>0 minutes</p>;
     }
 
@@ -148,7 +145,14 @@ const TaskListPage: React.FC = () => {
               <DialogTitle>New task</DialogTitle>
               <DialogDescription>Create a new task</DialogDescription>
             </DialogHeader>
-            <InputForm onClose={closeDialog} />{" "}
+            <InputForm onClose={closeDialog} />
+            <button
+              aria-label="Close"
+              onClick={closeDialog}
+              className="absolute top-2 right-2 p-2 bg-gray-200 rounded-full"
+            >
+              
+            </button>
           </DialogContent>
         </Dialog>
 
