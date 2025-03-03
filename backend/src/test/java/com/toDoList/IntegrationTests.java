@@ -26,24 +26,24 @@ import com.toDoList.services.TaskRepository;
 class IntegrationTests {
 
     @Autowired
-    private MockMvc mockMvc; // Simula peticiones HTTP a TaskController
+    private MockMvc mockMvc; 
 
     @Autowired
     private TaskRepository taskRepository;
 
     @Autowired
-    private ObjectMapper objectMapper; // Convierte objetos a JSON y viceversa
+    private ObjectMapper objectMapper; 
 
     @BeforeEach
     void setUp() {
-        taskRepository.init(); // Inicializar tareas de prueba
+        taskRepository.init();
     }
 
     @Test
     void givenTasks_whenGetAll_thenReturnTasksList() throws Exception {
         mockMvc.perform(get("/todos"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", greaterThan(0))); // Verifica que haya tareas en la respuesta
+                .andExpect(jsonPath("$.length()", greaterThan(0)));
     }
 
     @Test
@@ -81,7 +81,7 @@ class IntegrationTests {
                 .andExpect(status().isNoContent());
 
         mockMvc.perform(get("/todos/" + task.getId()))
-                .andExpect(status().isNotFound()); // Verifica que realmente se eliminó
+                .andExpect(status().isNotFound()); 
     }
 
     @Test
@@ -93,6 +93,6 @@ class IntegrationTests {
                 .andExpect(status().isOk());
 
         mockMvc.perform(get("/todos/" + task.getId()))
-                .andExpect(jsonPath("$.completed").value(true)); // Verifica que se actualizó a "completed"
+                .andExpect(jsonPath("$.completed").value(true)); 
     }
 }

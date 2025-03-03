@@ -154,10 +154,10 @@ class TaskRepositoryTest {
     void givenCompletedTasks_whenGetAverageCompletionTime_thenAverageTimeIsReturned() {
         // Given
         Tasks task1 = new Tasks(null, "Task 1", TaskPriority.HIGH, true, LocalDate.now());
-        task1.setDoneDate(LocalDateTime.now().plusDays(1)); // ✅ Asegurar que la fecha de finalización se asigna
+        task1.setDoneDate(LocalDateTime.now().plusDays(1)); 
 
         Tasks task2 = new Tasks(null, "Task 2", TaskPriority.MEDIUM, true, LocalDate.now());
-        task2.setDoneDate(LocalDateTime.now().plusDays(2)); // ✅ Asegurar que la fecha de finalización se asigna
+        task2.setDoneDate(LocalDateTime.now().plusDays(2)); 
 
         taskRepository.create(task1);
         taskRepository.create(task2);
@@ -166,7 +166,7 @@ class TaskRepositoryTest {
         double avgTime = taskRepository.getAverageCompletionTime();
 
         // Then
-        assertTrue(avgTime >= 1440.0 && avgTime <= 2880.0); // ✅ Agregar un margen de tolerancia
+        assertTrue(avgTime >= 1440.0 && avgTime <= 2880.0); 
     }
 
 }
