@@ -16,7 +16,7 @@ A **To-Do List Application** built using **Spring Boot** for the backend and **R
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend (React + TypeScript)
 - **Vite** (Development environment)
