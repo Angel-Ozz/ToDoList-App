@@ -1,125 +1,143 @@
-# 📌 ToDoList-App
+# ToDoList-App
 
-A **full-stack** To-Do List application built with **React (Vite) + TypeScript + ShadCN** on the frontend and **Spring Boot (Maven)** on the backend.
+A **To-Do List Application** built using **Spring Boot** for the backend and **React with TypeScript** for the frontend. This project allows users to manage their tasks efficiently with features like adding, updating, marking tasks as completed or undone, filtering, and viewing task statistics.
 
 ---
 
-## ⚡ Features
+## 🚀 Features
 
-✅ Add, update, and delete tasks  
-✅ Mark tasks as completed/uncompleted  
-✅ Sort tasks by priority and due date  
-✅ Filter tasks by name, priority, or status  
-✅ Track **average completion time** of tasks  
-✅ Responsive UI with **ShadCN** components  
-✅ Unit and integration tests for frontend and backend  
+- **Task Management:** Create, update, delete, and filter tasks.
+- **Task Completion Tracking:** Mark tasks as completed or undone.
+- **Priority-Based Organization:** Tasks are categorized into high, medium, or low priority.
+- **Statistics:** View average task completion times.
+- **User-Friendly Interface:** Built using **React**, **TypeScript**, and **ShadCN components**.
+- **State Management:** Uses **React Hooks**.
+- **API Integration:** Communicates with a **Spring Boot** backend.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### **Frontend**
-- **React 18** + **Vite** (for fast builds)
-- **TypeScript** (strict typing)
-- **ShadCN** (UI components)
-- **Axios** (for API requests)
-- **React Router DOM** (for navigation)
-- **TailwindCSS** (for styling)
-- **Vitest** + **React Testing Library** (for unit & snapshot tests)
+### Frontend (React + TypeScript)
+- **Vite** (Development environment)
+- **React Router DOM** (Routing)
+- **Axios** (API calls)
+- **ShadCN UI Components** (Pre-built UI elements)
+- **Tailwind CSS** (Styling)
+- **Jest & React Testing Library** (Testing)
+- **Vitest** (Unit testing framework)
 
-### **Backend**
-- **Spring Boot** (with Maven)
-- **Spring Boot Web Starter** (REST API)
-- **Spring Validation** (for request validation)
-- **JUnit** + **Mockito** (for backend tests)
-
----
-
-## 🚀 Getting Started
-
-### **1️⃣ Clone the Repository**
-```sh
-git clone https://github.com/Angel-Ozz/ToDoList-App.git
-cd ToDoList-App
-```
-
-### **2️⃣ Backend Setup**
-> Ensure you have **Java 21** and **Maven** installed.
-
-```sh
-cd backend
-mvn spring-boot:run
-```
-The backend will start on **`http://localhost:8080`**.
-
----
-
-### **3️⃣ Frontend Setup**
-> Ensure you have **Node.js 18+** and **pnpm/npm/yarn** installed.
-
-```sh
-cd frontend
-npm install
-npm run dev
-```
-The frontend will start on **`http://localhost:5173/todos`**.
+### Backend (Spring Boot)
+- **Spring Boot** (REST API framework)
+- **Spring Boot Web Starter** (For REST endpoints)
+- **Spring Boot Validation** (Input validation)
+- **Spring Boot DevTools** (Development tools)
+- **Spring Data JPA** (Database management, if implemented)
+- **H2 Database** (Currently available but not in use)
+- **Maven** (Dependency management)
 
 ---
 
 ## 📂 Project Structure
 
+### Frontend
 ```
-ToDoList-App/
-│── backend/        # Spring Boot backend
-│   ├── src/main/   # Java source code
-│   ├── src/test/   # Unit & integration tests
-│   ├── pom.xml     # Maven dependencies
-│── frontend/       # React frontend
-│   ├── src/
-│   │   ├── components/    # ShadCN UI components
-│   │   ├── pages/         # React pages
-│   │   ├── services/      # API calls with Axios
-│   │   ├── types/         # TypeScript interfaces
-│   │   ├── tests/         # Unit tests with Vitest
-│   ├── vite.config.ts     # Vite configuration
-│   ├── package.json       # Frontend dependencies
-│── README.md       # Documentation
-│── .gitignore      # Git ignore file
+frontend/
+│── src/
+│   ├── components/ui/       # UI components (from ShadCN)
+│   ├── pages/               # Page components
+│   ├── services/            # API service calls
+│   ├── tasks/               # Task-related components
+│   ├── types/               # TypeScript types
+│   ├── tests/               # Unit and integration tests
+│   ├── App.tsx              # Main entry component
+│   ├── main.tsx             # Root React component
+│── public/                  # Static assets
+│── package.json             # Dependencies & scripts
+│── vite.config.ts           # Vite configuration
+```
+
+### Backend
+```
+backend/
+│── src/main/java/com/toDoList/
+│   ├── config/    
+│   ├── controllers/        # REST controllers
+│   ├── exceptions/         # Custom exception handlers
+│   ├── models/             # Task model
+│   ├── services/           # Business logic
+│   ├── ToDoListApplication.java  # Main Spring Boot app
+│── src/main/resources/     # Application properties
+│── pom.xml                 # Maven dependencies
 ```
 
 ---
 
-## 🧪 Testing
+## 🚀 Getting Started
 
-### **Frontend**
+### 🏗️ Prerequisites
+Make sure you have the following installed:
+- **Node.js** (v18 or higher)
+- **npm** or **yarn**
+- **Java 21**
+- **Maven**
+
+### 🔥 Backend Setup
+```sh
+cd backend
+mvn clean install
+mvn spring-boot:run
+```
+The backend will start at `http://localhost:8080/todos`.
+
+### 🎨 Frontend Setup
 ```sh
 cd frontend
+npm install
+npm run dev
+```
+The frontend will be available at `http://localhost:8080/todos`.
+
+---
+
+## 🛠 API Endpoints
+
+### Task Management
+| Method | Endpoint | Description |
+|--------|---------|-------------|
+| **GET** | `/todos` | Get all tasks with optional filters & pagination |
+| **GET** | `/todos/{id}` | Get a task by ID |
+| **POST** | `/todos` | Create a new task |
+| **PATCH** | `/todos/{id}` | Update a task |
+| **DELETE** | `/todos/{id}` | Delete a task |
+
+### Task Status Updates
+| Method | Endpoint | Description |
+|--------|---------|-------------|
+| **PATCH** | `/todos/{id}/done` | Mark a task as completed |
+| **PATCH** | `/todos/{id}/undone` | Mark a task as not completed |
+
+### Task Statistics
+| Method | Endpoint | Description |
+|--------|---------|-------------|
+| **GET** | `/todos/avg-done-time` | Get the average completion time of tasks |
+| **GET** | `/todos/avg-done-time-priorities` | Get the average completion time by priority |
+
+---
+
+## 🧪 Testing
+The project includes unit and integration tests for both frontend and backend.
+
+### Run Frontend Tests
+```sh
 npm run test
 ```
 
-### **Backend**
+### Run Backend Tests
 ```sh
-cd backend
 mvn test
 ```
 
 ---
 
-## 📌 API Endpoints
-
-| Method | Endpoint             | Description               |
-|--------|----------------------|---------------------------|
-| GET    | `/tasks`             | Fetch all tasks          |
-| POST   | `/tasks`             | Create a new task        |
-| PUT    | `/tasks/{id}`        | Update a task            |
-| DELETE | `/tasks/{id}`        | Delete a task            |
-| PATCH  | `/tasks/{id}/done`   | Mark a task as done      |
-| PATCH  | `/tasks/{id}/undone` | Mark a task as undone    |
-
-
----
-
-### 👨‍💻 Made by [Angel-Ozz](https://github.com/Angel-Ozz)
-
----
 
