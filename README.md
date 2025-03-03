@@ -22,7 +22,6 @@ A **full-stack** To-Do List application built with **React (Vite) + TypeScript +
 - **React 18** + **Vite** (for fast builds)
 - **TypeScript** (strict typing)
 - **ShadCN** (UI components)
-- **React Hook Form** (for forms & validation)
 - **Axios** (for API requests)
 - **React Router DOM** (for navigation)
 - **TailwindCSS** (for styling)
@@ -32,7 +31,6 @@ A **full-stack** To-Do List application built with **React (Vite) + TypeScript +
 - **Spring Boot** (with Maven)
 - **Spring Boot Web Starter** (REST API)
 - **Spring Validation** (for request validation)
-- **H2 Database** (for testing)
 - **JUnit** + **Mockito** (for backend tests)
 
 ---
@@ -118,25 +116,6 @@ mvn test
 | PATCH  | `/tasks/{id}/done`   | Mark a task as done      |
 | PATCH  | `/tasks/{id}/undone` | Mark a task as undone    |
 
----
-
-## 🎯 To-Do & Future Improvements
-- ✅ Implement task filtering & sorting (done ✅)
-- ✅ Add unit and integration tests (done ✅)
-- 🔲 Implement **Dark Mode**
-- 🔲 Improve UI/UX with animations
-- 🔲 Deploy on **Vercel** + **Railway**
-
----
-
-## 📜 License
-This project is **open-source** under the **MIT License**.
-
----
-
-## ⭐ Contributing
-Feel free to **fork** this repository and submit pull requests.  
-If you find any issues, open a **GitHub Issue**!
 
 ---
 
