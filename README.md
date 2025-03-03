@@ -4,7 +4,7 @@ A **To-Do List Application** built using **Spring Boot** for the backend and **R
 
 ---
 
-## 🚀 Features
+## Features
 
 - **Task Management:** Create, update, delete, and filter tasks.
 - **Task Completion Tracking:** Mark tasks as completed or undone.
@@ -38,7 +38,7 @@ A **To-Do List Application** built using **Spring Boot** for the backend and **R
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ### Frontend
 ```
@@ -101,7 +101,7 @@ backend/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 🏗️ Prerequisites
 Make sure you have the following installed:
@@ -110,7 +110,7 @@ Make sure you have the following installed:
 - **Java 21**
 - **Maven**
 
-### 🔥 Backend Setup
+### Backend Setup
 ```sh
 cd backend
 mvn clean install
@@ -118,7 +118,7 @@ mvn spring-boot:run
 ```
 The backend will start at `http://localhost:8080/todos`.
 
-### 🎨 Frontend Setup
+### Frontend Setup
 ```sh
 cd frontend
 npm install
@@ -153,7 +153,7 @@ The frontend will be available at `http://localhost:8080/todos`.
 
 ---
 
-## 🧪 Testing
+## Testing
 The project includes unit and integration tests for both frontend and backend.
 
 ### Run Frontend Tests
