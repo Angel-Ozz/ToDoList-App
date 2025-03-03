@@ -103,7 +103,7 @@ backend/
 
 ## Getting Started
 
-### 🏗️ Prerequisites
+### Prerequisites
 Make sure you have the following installed:
 - **Node.js** (v18 or higher)
 - **npm** or **yarn**
@@ -128,7 +128,7 @@ The frontend will be available at `http://localhost:8080/todos`.
 
 ---
 
-## 🛠 API Endpoints
+##  API Endpoints
 
 ### Task Management
 | Method | Endpoint | Description |
