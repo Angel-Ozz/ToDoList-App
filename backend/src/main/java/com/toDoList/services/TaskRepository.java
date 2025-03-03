@@ -27,22 +27,34 @@ public class TaskRepository {
     private List<Tasks> tasks = new ArrayList<>();
     private int currentId = 0;
 
-    // Find all tasks with filtering and sorting
+    /**
+     * Finds all tasks with optional filtering and sorting.
+     *
+     * @param page      the page number for pagination
+     * @param size      the page size for pagination
+     * @param sortBy    the field to sort by (optional)
+     * @param filterBy  the field to filter by (optional)
+     * @param priority  the task priority to filter by (optional)
+     * @param completed the completion status to filter by (optional)
+     * @param taskName  the task name to filter by (optional)
+     * @return a list of tasks matching the criteria
+     */
     public List<Tasks> findAll(int page, int size, String sortBy, String filterBy, String priority, Boolean completed, String taskName) {
 
+        // Create a stream from the list of tasks
         Stream<Tasks> taskStream = tasks.stream();
 
-        // Filtering by completion status
+        // Filter tasks by completion status if provided
         if (completed != null) {
             taskStream = taskStream.filter(task -> task.getCompleted().equals(completed));
         }
 
-        // Filtering by task name (partial match)
+        // Filter tasks by task name if provided (case insensitive partial match)
         if (taskName != null && !taskName.isEmpty()) {
             taskStream = taskStream.filter(task -> task.getTaskName().toLowerCase().contains(taskName.toLowerCase()));
         }
 
-        // Filtering by priority
+        // Filter tasks by priority if provided
         if (priority != null) {
             try {
                 TaskPriority taskPriority = TaskPriority.valueOf(priority.toUpperCase());
@@ -53,39 +65,59 @@ public class TaskRepository {
             }
         }
 
-        // Sorting
+        // Sort tasks by the specified field if provided
         if ("priority".equalsIgnoreCase(sortBy)) {
             taskStream = taskStream.sorted(Comparator.comparing(Tasks::getTaskPriority));
         } else if ("taskDueDate".equalsIgnoreCase(sortBy)) {
             taskStream = taskStream.sorted(Comparator.comparing(Tasks::getTaskDueDate, Comparator.nullsLast(Comparator.naturalOrder())));
         }
 
-        // Pagination
+        // Apply pagination to the stream
         return taskStream
                 .skip(page * size)
                 .limit(size)
                 .collect(Collectors.toList());
     }
 
-    // Create a new task
+    /**
+     * Creates a new task.
+     *
+     * @param task the task to create
+     */
     public void create(Tasks task) {
+        // Check if the task is null or already exists
         if (task == null || findById(task.getId()).isPresent()) {
             logger.warn("Attempted to create an invalid or existing task: {}", task);
             throw new IllegalArgumentException("Task already exists or is invalid.");
         }
+        // Increment the current ID and set it to the task
         currentId++;
         task.setId(currentId);
+        // Add the task to the list
         tasks.add(task);
         logger.info("Task created: {}", task);
     }
 
-    // Find a task by ID
+    /**
+     * Finds a task by its ID.
+     *
+     * @param id the ID of the task
+     * @return an Optional containing the found task or empty if not found
+     */
     public Optional<Tasks> findById(Integer id) {
+        // Find the task by ID in the list
         return tasks.stream().filter(task -> task.getId().equals(id)).findFirst();
     }
 
-    // Update a task using patch
+    /**
+     * Updates a task using partial data.
+     *
+     * @param id            the ID of the task to update
+     * @param partialUpdate the partial data to update the task with
+     * @return the updated task
+     */
     public Tasks patchUpdate(Integer id, Tasks partialUpdate) {
+        // Find the task by ID and update its fields if present
         return findById(id).map(existingTask -> {
             if (partialUpdate.getTaskName() != null) {
                 existingTask.setTaskName(partialUpdate.getTaskName());
@@ -107,8 +139,14 @@ public class TaskRepository {
         });
     }
 
-    // Mark a task as completed
+    /**
+     * Marks a task as completed.
+     *
+     * @param id the ID of the task to mark as completed
+     * @return an Optional containing the updated task or empty if not found
+     */
     public Optional<Tasks> markAsDone(Integer id) {
+        // Find the task by ID and mark it as completed if present
         return findById(id).map(task -> {
             if (!task.getCompleted()) {
                 task.setCompleted(true);
@@ -121,8 +159,14 @@ public class TaskRepository {
         });
     }
 
-    // Mark a task as uncompleted
+    /**
+     * Marks a task as not completed.
+     *
+     * @param id the ID of the task to mark as not completed
+     * @return an Optional containing the updated task or empty if not found
+     */
     public Optional<Tasks> markAsUnDone(Integer id) {
+        // Find the task by ID and mark it as not completed if present
         return findById(id).map(task -> {
             if (task.getCompleted()) {
                 task.setCompleted(false);
@@ -135,8 +179,13 @@ public class TaskRepository {
         });
     }
 
-    // Average completion time
+    /**
+     * Calculates the average completion time of all completed tasks.
+     *
+     * @return the average completion time in minutes
+     */
     public double getAverageCompletionTime() {
+        // Calculate the average completion time of completed tasks
         return tasks.stream()
                 .filter(Tasks::getCompleted)
                 .mapToDouble(task -> Math.floor(Duration.between(task.getCreationDate(), task.getDoneDate()).toMinutes()))
@@ -144,8 +193,13 @@ public class TaskRepository {
                 .orElse(0.0);
     }
 
-    // Average completion time per priority
+    /**
+     * Calculates the average completion time of tasks by priority.
+     *
+     * @return a map with the task priority and its average completion time
+     */
     public Map<TaskPriority, Double> getAverageCompletionTimePerPriority() {
+        // Calculate the average completion time per priority for completed tasks
         return tasks.stream()
                 .filter(Tasks::getCompleted)
                 .collect(Collectors.groupingBy(
@@ -154,8 +208,14 @@ public class TaskRepository {
                 ));
     }
 
-    // Delete a task
+    /**
+     * Deletes a task by its ID.
+     *
+     * @param id the ID of the task to delete
+     * @return true if the task was deleted successfully, false otherwise
+     */
     public boolean delete(Integer id) {
+        // Remove the task by ID from the list
         boolean removed = tasks.removeIf(task -> task.getId().equals(id));
         if (!removed) {
             logger.warn("Task with ID {} not found for deletion", id);
@@ -165,9 +225,12 @@ public class TaskRepository {
         return true;
     }
 
-    // Initialize repository with sample data
+    /**
+     * Initializes the repository with sample data.
+     */
     @PostConstruct
     public void init() {
+        // Add a sample task to the list
         tasks.add(new Tasks(
                 ++currentId,
                 "Do a to-do list",
