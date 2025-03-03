@@ -43,32 +43,60 @@ A **To-Do List Application** built using **Spring Boot** for the backend and **R
 ### Frontend
 ```
 frontend/
+│── node_modules/
+│── public/
 │── src/
-│   ├── components/ui/       # UI components (from ShadCN)
-│   ├── pages/               # Page components
-│   ├── services/            # API service calls
-│   ├── tasks/               # Task-related components
-│   ├── types/               # TypeScript types
-│   ├── tests/               # Unit and integration tests
-│   ├── App.tsx              # Main entry component
-│   ├── main.tsx             # Root React component
-│── public/                  # Static assets
-│── package.json             # Dependencies & scripts
-│── vite.config.ts           # Vite configuration
+│   ├── assets/
+│   ├── components/
+│   ├── hooks/
+│   ├── lib/
+│   ├── pages/
+│   ├── tasks/
+│   ├── tests/
+│   ├── types/
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   ├── vite-env.d.ts
+│── .gitignore
+│── components.json
+│── eslint.config.js
+│── index.html
+│── package-lock.json
+│── package.json
+│── postcss.config.js
+│── README.md
+│── tailwind.config.js
+│── tsconfig.app.json
+│── tsconfig.json
+│── tsconfig.node.json
+│── vite.config.ts
+
 ```
 
 ### Backend
 ```
 backend/
-│── src/main/java/com/toDoList/
-│   ├── config/    
-│   ├── controllers/        # REST controllers
-│   ├── exceptions/         # Custom exception handlers
-│   ├── models/             # Task model
-│   ├── services/           # Business logic
-│   ├── ToDoListApplication.java  # Main Spring Boot app
-│── src/main/resources/     # Application properties
-│── pom.xml                 # Maven dependencies
+│── .mvn/wrapper/
+│── src/
+│   ├── main/
+│   │   ├── java/com/toDoList/
+│   │   │   ├── config/
+│   │   │   ├── controllers/
+│   │   │   ├── exceptions/
+│   │   │   ├── models/
+│   │   │   ├── services/
+│   │   │   ├── TaskPriority.java
+│   │   │   ├── ToDoListApplication.java
+│   │   ├── resources/
+│   ├── test/
+│── target/
+│── .gitignore
+│── mvnw
+│── mvnw.cmd
+│── pom.xml
+
 ```
 
 ---
