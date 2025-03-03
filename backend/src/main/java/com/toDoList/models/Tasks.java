@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotEmpty; //javax dsnt work with spring
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class Tasks {
+public class Tasks { //more validations added
     @Id
     private Integer id;
     @NotEmpty
@@ -114,6 +114,10 @@ public class Tasks {
 
     public LocalDateTime getDoneDate() {
         return doneDate;
+    }
+
+    public void setDoneDate(LocalDateTime doneDate) {
+        this.doneDate = doneDate;
     }
 
 }
