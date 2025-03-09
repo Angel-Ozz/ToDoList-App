@@ -3,19 +3,7 @@
 A **To-Do List Application** built using **Spring Boot** for the backend and **React with TypeScript** for the frontend. This project allows users to manage their tasks efficiently with features like adding, updating, marking tasks as completed or undone, filtering, and viewing task statistics.
 
 ---
-## Tabla de Contenidos
-   - [Descricpción](#Descricpción)
-   - [Instalación](#installation)
-   - [Code Organization](#code-organization)
-   - [Architecture](#architecture)
-     - [The Frontend](https://github.com/internetarchive/openlibrary/wiki/Frontend-Guide)
-     - [The Backend](#the-backend)
-     - [The Service Architecture](https://github.com/internetarchive/openlibrary/wiki/Production-Service-Architecture)
-   - [Developer's Guide](#developers-guide)
-   - [Running Tests](#running-tests)
-   - [Contributing](#contributing)
-   - [Public APIs](https://openlibrary.org/developers/api)
-   - [FAQs](https://openlibrary.org/help/faq)
+
 
 ## Features
 
@@ -173,12 +161,6 @@ The project includes unit and integration tests for both frontend and backend.
 ```sh
 npm run test
 ```
-
-## Descricpción
-
-Open Library is an effort started in 2006 to create "one web page for every book ever published." It provides access to many public domain and out-of-print books, which can be read online.
-
-Here's a quick public tour of Open Library to get you familiar with the service and its offerings (10min).
 
 
 ### Run Backend Tests
